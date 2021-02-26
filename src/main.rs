@@ -8,14 +8,14 @@ fn main() {
     // first prime
     println!("{}", 2);
     // already have first prime
-    let mut prime_count = 1;
-    let mut candidate = 3;
+    let mut prime_count:u64 = 1;
+    let mut candidate:u64 = 3;
 
     while prime_count < n
     {
-        let mut aux = 3;
+        let mut aux:u64 = 3;
         let mut is_prime = true;
-        while aux < candidate / 2
+        while aux < (candidate as f64).sqrt() as u64
         {
             if candidate % aux == 0
             {
