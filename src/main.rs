@@ -20,35 +20,35 @@ use std::env;
 use std::collections::VecDeque;
 
 fn main() {
-    let args:Vec<String> = env::args().collect();
+	let args:Vec<String> = env::args().collect();
 
-    // get the first `n` primes
-    let n:usize = args[1].parse().unwrap();
-    let mut primes:VecDeque<u64> = VecDeque::with_capacity(n);
-    // first prime
-    println!("{}", 2);
-    primes.push_back(2);
+	// get the first `n` primes
+	let n:usize = args[1].parse().unwrap();
+	let mut primes:VecDeque<u64> = VecDeque::with_capacity(n);
+	// first prime
+	println!("{}", 2);
+	primes.push_back(2);
 
-    let mut candidate:u64 = 3;
+	let mut candidate:u64 = 3;
 
-    while primes.len() < n
-    {
-        let mut is_prime = true;
-        let limit = (candidate as f64).sqrt() as u64;
-        for i in primes.iter().take_while(|x| **x <= limit)
-        {
-            if candidate % *i == 0
-            {
-                is_prime = false;
-                break;
-            }
-        }
+	while primes.len() < n
+	{
+		let mut is_prime = true;
+		let limit = (candidate as f64).sqrt() as u64;
+		for i in primes.iter().take_while(|x| **x <= limit)
+		{
+			if candidate % *i == 0
+			{
+				is_prime = false;
+				break;
+			}
+		}
 
-        if is_prime
-        {
-            println!("{}", candidate);
-            primes.push_back(candidate);
-        }
-        candidate += 2;
-    }
+		if is_prime
+		{
+			println!("{}", candidate);
+			primes.push_back(candidate);
+		}
+		candidate += 2;
+	}
 }
