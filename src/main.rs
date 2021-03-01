@@ -36,9 +36,9 @@ fn main() {
         let mut i = 0;
         let mut test_prime = primes.get(i).unwrap();
         let mut is_prime = true;
-        while *test_prime < (candidate as f64).sqrt() as u64
+        while *test_prime <= (candidate as f64).sqrt() as u64
         {
-            if candidate % test_prime == 0
+            if candidate % *test_prime == 0
             {
                 is_prime = false;
                 break;
