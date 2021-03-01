@@ -1,0 +1,15 @@
+============
+*** TODO ***
+============
+Technical:
+ - Use bigints (maybe GMP or another similar library)
+ - Parallelize computations (MPI and/or OpenMP)
+
+Documentation:
+ - Write man page
+ - Create `help` option
+
+Interface:
+ - Option to only print nth number
+ - Option to store and import numbers from a file
+ - Option to run verbose (turn default to silent)
