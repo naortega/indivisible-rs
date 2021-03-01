@@ -1,0 +1,22 @@
+===================
+*** Indivisible ***
+===================
+Indivisible is an optimized prime number generator written in Rust.
+
+# Building
+----------
+To build the project you will require the Rust compiler and build
+system, `cargo`. At which point you simply run `cargo build` in the root
+directory of the project. To create an optimized release build append
+the `--release` flag to the previous command.
+
+# Legacy
+--------
+This project was originally written in C. It can be found at
+<https://gitlab.com/naortega/Indivisible-legacy>
+
+# License
+---------
+This project is licensed under the terms & conditions of the GNU General
+Public License version 3 or greater (see `LICENSE` file for more
+information).
