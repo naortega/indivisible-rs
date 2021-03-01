@@ -1,8 +1,12 @@
 [package]
 name = "indivisible"
-version = "0.1.0"
-authors = ["Nicolás Ortega Froysa <naortega@themusicinnoise.net>"]
+version = "2.0.0"
+authors = ["Nicolás Ortega Froysa <nicolas@ortegas.org>"]
+description = "A rewrite of the Indivisible (now legacy) project, once written in C, now rewritten in Rust."
 edition = "2018"
+readme = "README"
+license = "GPL-3.0"
+keywords = ["primes", "math"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
