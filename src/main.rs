@@ -33,19 +33,15 @@ fn main() {
 
     while primes.len() < n
     {
-        let mut i = 0;
-        let mut test_prime = primes.get(i).unwrap();
         let mut is_prime = true;
-        while *test_prime <= (candidate as f64).sqrt() as u64
+        let limit = (candidate as f64).sqrt() as u64;
+        for i in primes.iter().take_while(|x| **x <= limit)
         {
-            if candidate % *test_prime == 0
+            if candidate % *i == 0
             {
                 is_prime = false;
                 break;
             }
-
-            i += 1;
-            test_prime = primes.get(i).unwrap();
         }
 
         if is_prime
