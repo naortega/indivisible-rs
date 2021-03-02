@@ -16,17 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::env;
+//use std::env;
+use structopt::StructOpt;
+use std::path::PathBuf;
 use std::collections::VecDeque;
 
+#[derive(StructOpt)]
+struct Opt {
+	#[structopt(short, long)]
+	verbose:bool,
+	//#[structopt(short, long)]
+	//import:Option<PathBuf>,
+	n:usize,
+}
+
 fn main() {
-	let args:Vec<String> = env::args().collect();
+	//let args:Vec<String> = env::args().collect();
+	let opts = Opt::from_args();
 
 	// get the first `n` primes
-	let n:usize = args[1].parse().unwrap();
+	//let n:usize = args[1].parse().unwrap();
+	let n = opts.n;
 	let mut primes:VecDeque<u64> = VecDeque::with_capacity(n);
 	// first prime
-	println!("{}", 2);
+	if opts.verbose
+	{
+		println!("{}", 2);
+	}
 	primes.push_back(2);
 
 	let mut candidate:u64 = 3;
@@ -46,9 +62,17 @@ fn main() {
 
 		if is_prime
 		{
-			println!("{}", candidate);
+			if opts.verbose
+			{
+				println!("{}", candidate);
+			}
 			primes.push_back(candidate);
 		}
 		candidate += 2;
+	}
+
+	if !opts.verbose
+	{
+		println!("{}", primes.back().unwrap());
 	}
 }
