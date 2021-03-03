@@ -1,7 +1,7 @@
 ===================
 *** Indivisible ***
 ===================
-Indivisible is an optimized prime number generator written in Rust.
+Indivisible is an optimized prime number generator and tester written in Rust.
 
 # Building
 ----------

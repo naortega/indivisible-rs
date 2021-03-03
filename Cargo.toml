@@ -2,7 +2,7 @@
 name = "indivisible"
 version = "2.0.0"
 authors = ["Nicolás Ortega Froysa <nicolas@ortegas.org>"]
-description = "A rewrite of the Indivisible (now legacy) project, once written in C, now rewritten in Rust."
+description = "A prime number generator and tester"
 edition = "2018"
 readme = "README"
 license = "GPL-3.0"
