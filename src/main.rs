@@ -23,11 +23,13 @@ use std::io::{BufRead, BufReader};
 use std::collections::VecDeque;
 
 #[derive(StructOpt)]
+#[structopt(about = "A prime number generator and tester.")]
 struct Opt {
-	#[structopt(short, long)]
+	#[structopt(short, long, help = "Print all found primes")]
 	verbose:bool,
-	#[structopt(short, long, name="FILE")]
+	#[structopt(short, long, name="FILE", help = "Import prime numbers from FILE")]
 	import:Option<PathBuf>,
+	#[structopt(help = "Ordinal of the prime to generate")]
 	n:usize,
 }
 
