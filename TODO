@@ -8,6 +8,3 @@ Technical:
 Documentation:
  - Write man page
  - Create `help` option
-
-Interface:
- - Option to import numbers from a file (exports with piping)

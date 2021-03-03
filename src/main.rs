@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//use std::env;
 use structopt::StructOpt;
 use std::path::PathBuf;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 use std::collections::VecDeque;
 
 #[derive(StructOpt)]
 struct Opt {
 	#[structopt(short, long)]
 	verbose:bool,
-	//#[structopt(short, long)]
-	//import:Option<PathBuf>,
+	#[structopt(short, long)]
+	import:Option<PathBuf>,
 	n:usize,
 }
 
@@ -36,14 +37,31 @@ fn main() {
 	// get the first `n` primes
 	let n = opts.n;
 	let mut primes:VecDeque<u64> = VecDeque::with_capacity(n);
-	// first prime
-	if opts.verbose
-	{
-		println!("{}", 2);
-	}
-	primes.push_back(2);
+	let mut candidate:u64;
 
-	let mut candidate:u64 = 3;
+	if opts.import.is_some()
+	{
+		let in_file = File::open(opts.import.unwrap()).unwrap();
+		let reader = BufReader::new(in_file);
+		for (index, line) in reader.lines().enumerate()
+		{
+			let line = line.unwrap();
+			let aux:u64 = line.parse().unwrap();
+			primes.push_back(aux);
+		}
+
+		candidate = *primes.back().unwrap() + 2;
+	}
+	else
+	{
+		// first prime
+		if opts.verbose
+		{
+			println!("{}", 2);
+		}
+		primes.push_back(2);
+		candidate = 3;
+	}
 
 	while primes.len() < n
 	{
@@ -71,6 +89,6 @@ fn main() {
 
 	if !opts.verbose
 	{
-		println!("{}", primes.back().unwrap());
+		println!("{}", primes.get(n-1).unwrap());
 	}
 }
