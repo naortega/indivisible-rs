@@ -31,11 +31,9 @@ struct Opt {
 }
 
 fn main() {
-	//let args:Vec<String> = env::args().collect();
 	let opts = Opt::from_args();
 
 	// get the first `n` primes
-	//let n:usize = args[1].parse().unwrap();
 	let n = opts.n;
 	let mut primes:VecDeque<u64> = VecDeque::with_capacity(n);
 	// first prime
