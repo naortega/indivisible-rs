@@ -5,9 +5,5 @@ Technical:
  - Use bigints (maybe GMP or another similar library)
  - Parallelize computations (MPI and/or OpenMP)
 
-Documentation:
- - Write man page
- - Create `help` option
-
 Features:
  - Test if number is prime
