@@ -10,6 +10,4 @@ Documentation:
  - Create `help` option
 
 Interface:
- - Option to only print nth number (set default)
  - Option to import numbers from a file (exports with piping)
- - Option to run verbose (print all numbers)
