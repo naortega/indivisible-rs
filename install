@@ -1,0 +1,16 @@
+#!/bin/sh
+if ! [ -f target/release/indivisible ]
+then
+	echo "ERROR: you have to compile a release build of indivisible first."
+	echo "Please run 'cargo build --release'"
+	exit 1
+fi
+
+PREFIX="/usr/local"
+
+echo "Installing ./target/release/indivisible to $PREFIX/bin/"
+install -m 755 ./target/release/indivisible $PREFIX/bin/
+gzip -c indivisible.1 > indivisible.1.gz
+echo "Installing manpage to $PREFIX/share/man/man1/"
+install -m 644 indivisible.1.gz $PREFIX/share/man/man1/
+rm indivisible.1.gz
