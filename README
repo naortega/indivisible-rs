@@ -3,12 +3,17 @@
 ===================
 Indivisible is an optimized prime number generator and tester written in Rust.
 
-# Building
-----------
+# Build & Installation
+----------------------
 To build the project you will require the Rust compiler and build
 system, `cargo`. At which point you simply run `cargo build` in the root
 directory of the project. To create an optimized release build append
 the `--release` flag to the previous command.
+
+Once a release build has been compiled, you may install Indivisible and
+the manpage documentation by running the `install` script. In a similar
+manner, you can run the `uninstall` script to remove the previously
+installed binary and documentation.
 
 # Usage
 -------
