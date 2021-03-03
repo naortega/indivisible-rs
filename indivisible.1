@@ -1,0 +1,47 @@
+.TH INDIVISIBLE "1" "March 2021" "indivisible 2.0.0" "User Commands"
+.SH "NAME"
+indivisible \- prime number generator and tester
+.SH "SYNOPSIS"
+.B indivisible
+[\fIFLAGS\fR] [\fIOPTIONS\fR] <\fIn\fR>
+
+.SH "DESCRIPTION"
+Indivisible is a program for working with prime numbers. Its default behaviour will attempt to find the \fInth\fR prime.
+
+.SH "OPTIONS"
+.TP
+.B n
+The ordinal of the prime to be found
+.TP
+\fB\-i\fR, \fB\-\-import\fR <\fIfile\fR>
+Import prime numbers from \fIfile\fR
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Print all found primes
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Prints help information
+.TP
+\fB\-V\fR, \fB\-\-version\fR
+Prints version information
+
+.SH "EXAMPLES"
+.TP
+Print first 1000 primes:
+$ indivisible \-v 1000
+.TP
+Store first 1000 primes in a file:
+$ indivisible \-v 1000 > ./primes
+.TP
+Find 5000th prime using primes imported from a file:
+$ indivisible \-i ./primes 5000
+
+.SH "AUTHOR"
+Written by Nicolás A. Ortega Froysa.
+
+.SH "COPYRIGHT"
+Copyright \(co 2021 Ortega Froysa, Nicolás A. <nicolas@ortegas.org>.
+License: GNU General Public License version 3 or greater (see <https://gnu.org/licenses/gpl.html>).
+
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
