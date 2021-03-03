@@ -26,7 +26,7 @@ use std::collections::VecDeque;
 struct Opt {
 	#[structopt(short, long)]
 	verbose:bool,
-	#[structopt(short, long)]
+	#[structopt(short, long, name="FILE")]
 	import:Option<PathBuf>,
 	n:usize,
 }
