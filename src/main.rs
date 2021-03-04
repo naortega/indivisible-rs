@@ -45,7 +45,7 @@ fn main() {
 	{
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
-		for (index, line) in reader.lines().enumerate()
+		for line in reader.lines()
 		{
 			let line = line.unwrap();
 			let aux:u64 = line.parse().unwrap();
