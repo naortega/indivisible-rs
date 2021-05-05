@@ -22,24 +22,29 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::collections::VecDeque;
 
+mod test;
+
 #[derive(StructOpt)]
 #[structopt(about = "A prime number generator and tester.")]
-struct Opt {
+struct Opt
+{
 	#[structopt(short, long, help = "Print all found primes")]
 	verbose:bool,
 	#[structopt(short, long, name="FILE", help = "Import prime numbers from FILE")]
 	import:Option<PathBuf>,
+	#[structopt(short, long, help = "Test if n is prime instead of generation")]
+	test:bool,
 	#[structopt(help = "Ordinal of the prime to generate")]
 	n:usize,
 }
 
-fn main() {
+fn main()
+{
 	let opts = Opt::from_args();
 
 	// get the first `n` primes
 	let n = opts.n;
-	let mut primes:VecDeque<u64> = VecDeque::with_capacity(n);
-	let mut candidate:u64;
+	let mut primes:VecDeque<u64> = VecDeque::new();
 
 	if opts.import.is_some()
 	{
@@ -51,46 +56,94 @@ fn main() {
 			let aux:u64 = line.parse().unwrap();
 			primes.push_back(aux);
 		}
-
-		candidate = *primes.back().unwrap() + 2;
 	}
-	else
+
+	if opts.test
 	{
-		// first prime
-		if opts.verbose
+		let mut res:bool;
+		if primes.len() == 0
 		{
-			println!("{}", 2);
+			res = test::is_prime(n as u64);
 		}
-		primes.push_back(2);
-		candidate = 3;
-	}
-
-	while primes.len() < n
-	{
-		let mut is_prime = true;
-		let limit = (candidate as f64).sqrt() as u64;
-		for i in primes.iter().take_while(|x| **x <= limit)
+		else if primes.back().unwrap() >= &(n as u64)
 		{
-			if candidate % *i == 0
+			res = primes.contains(&(n as u64));
+		}
+		else if primes.back().unwrap() >= &((n as f64).sqrt() as u64)
+		{
+			res = test::is_prime_mem(n as u64, &primes)
+		}
+		else
+		{
+			res = test::is_prime_mem(n as u64, &primes);
+			if res
 			{
-				is_prime = false;
-				break;
+				res = test::is_prime_f(n as u64, primes.back().unwrap() + 2);
 			}
 		}
-
-		if is_prime
+		if res
 		{
 			if opts.verbose
 			{
-				println!("{}", candidate);
+				println!("true");
 			}
-			primes.push_back(candidate);
+			std::process::exit(0);
 		}
-		candidate += 2;
+		else
+		{
+			if opts.verbose
+			{
+				println!("false");
+			}
+			std::process::exit(1);
+		}
 	}
-
-	if !opts.verbose
+	else
 	{
-		println!("{}", primes.get(n-1).unwrap());
+		if primes.len() >= n
+		{
+			println!("{}", primes.get(n-1).unwrap());
+		}
+		else
+		{
+			let mut candidate:u64;
+
+			if primes.len() == 0
+			{
+				primes.push_back(2);
+				if opts.verbose
+				{
+					println!("{}", 2);
+				}
+				candidate = 3;
+			}
+			else if primes.len() == 1
+			{
+				candidate = 3;
+			}
+			else
+			{
+				candidate = *primes.back().unwrap() + 2;
+			}
+
+			while primes.len() < n
+			{
+				if test::is_prime_mem(candidate, &primes)
+				{
+					primes.push_back(candidate);
+					if opts.verbose
+					{
+						println!("{}", candidate);
+					}
+				}
+
+				candidate += 2;
+			}
+
+			if !opts.verbose
+			{
+				println!("{}", primes.get(n-1).unwrap());
+			}
+		}
 	}
 }
