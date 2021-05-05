@@ -4,6 +4,3 @@
 Technical:
  - Use bigints (maybe GMP or another similar library)
  - Parallelize computations (MPI and/or OpenMP)
-
-Features:
- - Test if number is prime
