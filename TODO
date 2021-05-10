@@ -3,4 +3,4 @@
 ============
 Technical:
  - Use bigints (maybe GMP or another similar library)
- - Parallelize computations (MPI and/or OpenMP)
+ - Parallelize computations
