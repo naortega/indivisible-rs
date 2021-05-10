@@ -35,6 +35,7 @@ pub fn is_prime_f(n:u64, b:u64) -> bool
 			start += 1;
 		}
 	}
+	// skip even numbers
 	else if start % 2 == 0
 	{
 		start += 1;

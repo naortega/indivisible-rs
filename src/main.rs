@@ -61,18 +61,26 @@ fn main()
 	if opts.test
 	{
 		let mut res:bool;
+		// if no primes were imported, test from beginning (2)
 		if primes.len() == 0
 		{
 			res = test::is_prime(n as u64);
 		}
+		// `n` should be in `primes` if the last prime is larger than `n`
 		else if primes.back().unwrap() >= &(n as u64)
 		{
 			res = primes.contains(&(n as u64));
 		}
+		// we can memory test `n` if the last prime is >= sqrt(n)
 		else if primes.back().unwrap() >= &((n as f64).sqrt() as u64)
 		{
 			res = test::is_prime_mem(n as u64, &primes)
 		}
+		/*
+		 * if we have less primes than sqrt(n) then we can test all those
+		 * prior to the last prime in the list, and then begin testing odd
+		 * numbers.
+		 */
 		else
 		{
 			res = test::is_prime_mem(n as u64, &primes);
@@ -81,6 +89,7 @@ fn main()
 				res = test::is_prime_f(n as u64, primes.back().unwrap() + 2);
 			}
 		}
+
 		if res
 		{
 			if opts.verbose
@@ -100,6 +109,7 @@ fn main()
 	}
 	else
 	{
+		// if `primes` already contains the nth prime, print it
 		if primes.len() >= n
 		{
 			println!("{}", primes.get(n-1).unwrap());
@@ -110,6 +120,7 @@ fn main()
 
 			if primes.len() == 0
 			{
+				// assume 2 as a prime
 				primes.push_back(2);
 				if opts.verbose
 				{
