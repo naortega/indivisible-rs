@@ -1,0 +1,12 @@
+image: "rust:latest"
+
+stages:
+  - build
+
+build-job:
+  stage: build
+  artifacts:
+    paths:
+      - target/release/indivisible
+  script:
+    - cargo build --release
