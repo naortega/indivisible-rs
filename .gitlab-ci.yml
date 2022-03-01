@@ -2,6 +2,7 @@ image: "rust:latest"
 
 stages:
   - build
+  - test
 
 build-job:
   stage: build
@@ -10,3 +11,8 @@ build-job:
       - target/release/indivisible
   script:
     - cargo build --release
+
+test-job:
+  stage: test
+  script:
+    - ./test.sh
