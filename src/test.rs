@@ -23,6 +23,11 @@ pub fn is_prime_f(n:u64, b:u64) -> bool
 	assert_ne!(b, 0);
 	assert_ne!(b, 1);
 
+	if n == 1
+	{
+		return false;
+	}
+
 	let mut start = b;
 	if start == 2
 	{
@@ -42,14 +47,14 @@ pub fn is_prime_f(n:u64, b:u64) -> bool
 	}
 
 	let limit = (n as f64).sqrt() as u64 + 1;
-	for i in (start..limit).step_by(2)
-	{
-		if n % i == 0
+	let mut res = true;
+	(start..limit).step_by(2).for_each(|x| {
+		if n % x == 0
 		{
-			return false;
+			res = false;
 		}
-	}
-	return true;
+	});
+	return res;
 }
 
 pub fn is_prime(n:u64) -> bool
@@ -60,12 +65,12 @@ pub fn is_prime(n:u64) -> bool
 pub fn is_prime_mem(n:u64, primes:&VecDeque<u64>) -> bool
 {
 	let limit = (n as f64).sqrt() as u64;
-	for i in primes.iter().take_while(|x| **x <= limit)
-	{
-		if n % *i == 0
+	let mut res = true;
+	primes.iter().take_while(|x| **x <= limit).for_each(|x| {
+		if n % *x == 0
 		{
-			return false;
+			res = false;
 		}
-	}
-	return true;
+	});
+	return res;
 }
