@@ -30,7 +30,7 @@ struct Opt
 {
 	#[structopt(short, long, help = "Print all found primes")]
 	verbose:bool,
-	#[structopt(short, long, name="FILE", help = "Import prime numbers from FILE")]
+	#[structopt(short, long, name = "FILE", help = "Import prime numbers from FILE")]
 	import:Option<PathBuf>,
 	#[structopt(short, long, help = "Test if n is prime instead of generation")]
 	test:bool,
