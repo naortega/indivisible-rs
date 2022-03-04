@@ -62,7 +62,7 @@ pub fn is_prime_mem(n:u64, primes:&VecDeque<u64>) -> bool
 {
 	let limit = (n as f64).sqrt() as u64;
 	let pp = primes.partition_point(|x| *x < limit);
-	//let compound = primes.par_iter().take(pp).any(|x| n % x == 0);
-	let compound = primes.iter().take(pp).any(|x| n % x == 0);
+	//let compound = primes.par_iter().take(pp).any(|x| n % *x == 0);
+	let compound = primes.iter().take(pp+1).any(|x| n % *x == 0);
 	return !compound;
 }
