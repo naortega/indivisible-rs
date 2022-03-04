@@ -17,6 +17,7 @@
  */
 
 use std::collections::VecDeque;
+use rayon::prelude::*;
 
 pub fn is_prime_f(n:u64, b:u64) -> bool
 {
@@ -47,14 +48,9 @@ pub fn is_prime_f(n:u64, b:u64) -> bool
 	}
 
 	let limit = (n as f64).sqrt() as u64 + 1;
-	let mut res = true;
-	(start..limit).step_by(2).for_each(|x| {
-		if n % x == 0
-		{
-			res = false;
-		}
-	});
-	return res;
+	let compound = (start..limit).step_by(2).collect::<Vec<u64>>()
+		.par_iter().any(|x| n % x == 0);
+	return !compound;
 }
 
 pub fn is_prime(n:u64) -> bool
@@ -65,12 +61,8 @@ pub fn is_prime(n:u64) -> bool
 pub fn is_prime_mem(n:u64, primes:&VecDeque<u64>) -> bool
 {
 	let limit = (n as f64).sqrt() as u64;
-	let mut res = true;
-	primes.iter().take_while(|x| **x <= limit).for_each(|x| {
-		if n % *x == 0
-		{
-			res = false;
-		}
-	});
-	return res;
+	let pp = primes.partition_point(|x| *x < limit);
+	//let compound = primes.par_iter().take(pp).any(|x| n % x == 0);
+	let compound = primes.iter().take(pp).any(|x| n % x == 0);
+	return !compound;
 }
