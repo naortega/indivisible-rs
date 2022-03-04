@@ -1,10 +1,9 @@
-===================
-*** Indivisible ***
-===================
+# Indivisible
+
 Indivisible is an optimized prime number generator and tester written in Rust.
 
-# Build & Installation
-----------------------
+## Build & Installation
+
 To build the project you will require the Rust compiler and build
 system, `cargo`. At which point you simply run `cargo build` in the root
 directory of the project. To create an optimized release build append
@@ -15,8 +14,8 @@ the manpage documentation by running the `install` script. In a similar
 manner, you can run the `uninstall` script to remove the previously
 installed binary and documentation.
 
-# Usage
--------
+## Usage
+
 The purpose of Indivisible is to find the nth prime and all the primes
 before it. The basic usage is `indivisible <n>` where `n` is the ordinal
 of the prime you'd like to find. To display all primes before `n`, you
@@ -27,22 +26,23 @@ can also import prime numbers previously computed with the `--import` or
 `-i` option. To store already computed primes you are expected to use
 piping like any UNIX user would expect. Here is an example:
 
-  # store first 100 primes in ./primes
-  indivisible -v 100 > ./primes
-  # appends next 400 primes
-  indivisible -i ./primes -v 500 >> ./primes
-  # display the 600th prime
-  indivisible -i ./primes 600
+```bash
+# store first 100 primes in ./primes
+indivisible -v 100 > ./primes
+# appends next 400 primes
+indivisible -i ./primes -v 500 >> ./primes
+# display the 600th prime
+indivisible -i ./primes 600
+```
 
-# Legacy
---------
-This project was originally written in C. It can be found on my GitLab
-page.[1]
+## Legacy
 
-# License
----------
+This project was originally written in C. It can be found in the
+[indivisible-legacy repository](https://gitlab.com/naortega/Indivisible-legacy)
+on my GitLab.
+
+## License
+
 This project is licensed under the terms & conditions of the GNU General
 Public License version 3 or greater (see `LICENSE` file for more
 information).
-
-[1] https://gitlab.com/naortega/Indivisible-legacy
