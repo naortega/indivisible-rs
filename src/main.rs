@@ -50,12 +50,9 @@ fn main()
 	{
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
-		for line in reader.lines()
-		{
-			let line = line.unwrap();
-			let aux:u64 = line.parse().unwrap();
-			primes.push_back(aux);
-		}
+		reader.lines().into_iter().for_each(|x| {
+			primes.push_back(x.unwrap().parse().unwrap());
+		});
 	}
 
 	if opts.test
