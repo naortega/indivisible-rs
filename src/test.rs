@@ -48,9 +48,9 @@ pub fn is_prime_f(n:u64, b:u64) -> bool
 	}
 
 	let limit = (n as f64).sqrt() as u64 + 1;
-	let compound = (start..limit).step_by(2).collect::<Vec<u64>>()
+	let composite = (start..limit).step_by(2).collect::<Vec<u64>>()
 		.par_iter().any(|x| n % x == 0);
-	return !compound;
+	return !composite;
 }
 
 pub fn is_prime(n:u64) -> bool
@@ -62,7 +62,7 @@ pub fn is_prime_mem(n:u64, primes:&VecDeque<u64>) -> bool
 {
 	let limit = (n as f64).sqrt() as u64;
 	let pp = primes.partition_point(|x| *x < limit);
-	//let compound = primes.par_iter().take(pp).any(|x| n % *x == 0);
-	let compound = primes.iter().take(pp+1).any(|x| n % *x == 0);
-	return !compound;
+	//let composite = primes.par_iter().take(pp).any(|x| n % *x == 0);
+	let composite = primes.iter().take(pp+1).any(|x| n % *x == 0);
+	return !composite;
 }
