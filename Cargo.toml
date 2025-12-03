@@ -6,10 +6,9 @@ description = "A prime number generator and tester"
 edition = "2018"
 readme = "README"
 license = "GPL-3.0"
-keywords = ["primes", "math"]
+keywords = [ "primes", "math" ]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 structopt = "0.3.13"
-rayon = "1.5"

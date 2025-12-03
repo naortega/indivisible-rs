@@ -16,142 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use structopt::StructOpt;
-use std::path::PathBuf;
+use std::cell::RefCell;
+use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::collections::VecDeque;
+use std::path::PathBuf;
+use std::rc::Rc;
+use structopt::StructOpt;
 
-mod test;
+mod worker;
 
 #[derive(StructOpt)]
 #[structopt(about = "A prime number generator and tester.")]
-struct Opt
-{
+struct Opt {
 	#[structopt(short, long, help = "Print all found primes")]
 	verbose:bool,
 	#[structopt(short, long, name = "FILE", help = "Import prime numbers from FILE")]
 	import:Option<PathBuf>,
 	#[structopt(short, long, help = "Test if n is prime instead of generation")]
 	test:bool,
-	#[structopt(help = "Ordinal of the prime to generate")]
+	#[structopt(help = "Ordinal of the prime to generate or number to test for primality")]
 	n:u64,
+	#[structopt(short, long, name = "n", help = "Number of threads to spawn")]
+	jobs:Option<u64>,
 }
 
-fn main()
-{
+fn main() {
 	let opts = Opt::from_args();
 
-	// get the first `n` primes
-	let n = opts.n;
-	let mut primes:VecDeque<u64> = VecDeque::new();
+	let mut primes = Rc::new(RefCell::new(VecDeque::<u64>::new()));
 
-	if opts.import.is_some()
-	{
+	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
-		reader.lines().into_iter().for_each(|x| {
-			primes.push_back(x.unwrap().parse().unwrap());
-		});
-	}
-
-	if opts.test
-	{
-		let mut res:bool;
-		// if no primes were imported, test from beginning (2)
-		if primes.len() == 0
-		{
-			res = test::is_prime(n);
-		}
-		// `n` should be in `primes` if the last prime is larger than `n`
-		else if primes.back().unwrap() >= &(n)
-		{
-			res = primes.contains(&(n));
-		}
-		// we can memory test `n` if the last prime is >= sqrt(n)
-		else if primes.back().unwrap() >= &((n as f64).sqrt() as u64)
-		{
-			res = test::is_prime_mem(n, &primes)
-		}
-		/*
-		 * if we have less primes than sqrt(n) then we can test all those
-		 * prior to the last prime in the list, and then begin testing odd
-		 * numbers.
-		 */
-		else
-		{
-			res = test::is_prime_mem(n, &primes);
-			if res
-			{
-				res = test::is_prime_f(n, primes.back().unwrap() + 2);
-			}
-		}
-
-		if res
-		{
-			if opts.verbose
-			{
-				println!("true");
-			}
-			std::process::exit(0);
-		}
-		else
-		{
-			if opts.verbose
-			{
-				println!("false");
-			}
-			std::process::exit(1);
+		for p in reader.lines().into_iter() {
+			primes.borrow_mut().push_back(p.unwrap().parse().unwrap());
 		}
 	}
-	else
-	{
-		// if `primes` already contains the nth prime, print it
-		if primes.len() >= n as usize
-		{
-			println!("{}", primes.get((n as usize) - 1).unwrap());
-		}
-		else
-		{
-			let mut candidate:u64;
 
-			if primes.len() == 0
-			{
-				// assume 2 as a prime
-				primes.push_back(2);
-				if opts.verbose
-				{
-					println!("{}", 2);
-				}
-				candidate = 3;
-			}
-			else if primes.len() == 1
-			{
-				candidate = 3;
-			}
-			else
-			{
-				candidate = *primes.back().unwrap() + 2;
-			}
-
-			while primes.len() < n as usize
-			{
-				if test::is_prime_mem(candidate, &primes)
-				{
-					primes.push_back(candidate);
-					if opts.verbose
-					{
-						println!("{}", candidate);
-					}
-				}
-
-				candidate += 2;
-			}
-
-			if !opts.verbose
-			{
-				println!("{}", primes.get((n as usize) - 1).unwrap());
-			}
-		}
-	}
+	let jobs = match opts.jobs {
+		Some(n) => n,
+		None => 1, // TODO: use number of CPUs
+	};
 }
