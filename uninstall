@@ -1,6 +1,6 @@
 #!/bin/sh
 PREFIX="${PREFIX:-/usr/local}"
 echo "Remove $PREFIX/bin/indivisible"
-rm -f $PREFIX/bin/indivisible
+rm -f "$PREFIX/bin/indivisible"
 echo "Remove $PREFIX/local/man/man1/indivisible.1.gz"
-rm -f $PREFIX/share/man/man1/indivisible.1.gz
+rm -f "$PREFIX/share/man/man1/indivisible.1.gz"
