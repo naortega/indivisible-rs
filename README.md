@@ -38,8 +38,7 @@ indivisible -i ./primes 600
 ## Legacy
 
 This project was originally written in C. It can be found in the
-[indivisible-legacy repository](https://gitlab.com/naortega/Indivisible-legacy)
-on my GitLab.
+[indivisible-legacy repository](https://code.ortegas.org/nortega/indivisible-legacy).
 
 ## License
 
