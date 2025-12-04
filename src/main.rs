@@ -79,6 +79,9 @@ fn main() {
 		println!("{}", res);
 	} else {
 		let mut cand_gen = CandidateGenerator::new();
+		if !primes_list.borrow().is_empty() {
+			cand_gen.calc_base(*primes_list.borrow().back().unwrap());
+		}
 
 		loop {
 			let cand = cand_gen.next();

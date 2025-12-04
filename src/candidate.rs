@@ -18,6 +18,7 @@
 
 pub struct CandidateGenerator {
 	base:u64,
+	// first use of the base
 	first_use:bool,
 }
 
@@ -26,6 +27,27 @@ impl CandidateGenerator {
 		CandidateGenerator {
 			base: 0,
 			first_use: true,
+		}
+	}
+
+	pub fn calc_base(&mut self, last_prime:u64) {
+		if last_prime == 2 {
+			self.base = 0;
+			self.first_use = false;
+		} else if last_prime == 3 {
+			self.base = 6;
+			self.first_use = true;
+		} else {
+			let modulo = last_prime % 6;
+			if modulo == 1 {
+				self.base = last_prime + 5;
+				self.first_use = true;
+			} else if modulo == 5 {
+				self.base = last_prime + 1;
+				self.first_use = false;
+			} else {
+				panic!("Invalid last prime {}" , last_prime);
+			}
 		}
 	}
 
