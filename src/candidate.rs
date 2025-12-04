@@ -22,7 +22,7 @@ pub struct CandidateGenerator {
 }
 
 impl CandidateGenerator {
-	pub fn new() -> CandidateGenerator {
+	pub fn new() -> Self {
 		CandidateGenerator {
 			base: 0,
 			first_use: true,
