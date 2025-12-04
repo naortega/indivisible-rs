@@ -1,28 +1,50 @@
 #!/bin/bash
 
-echo -n "Prime finding..."
-if [[ $(./target/release/indivisible 5) == 11 ]]
+DEBUG_BIN="./target/debug/indivisible"
+RELEASE_BIN="./target/release/indivisible"
+
+if [ -f "$DEBUG_BIN" ]
 then
-	echo " pass"
+	BINARY="$DEBUG_BIN"
+elif [ -f "$RELEASE_BIN" ]
+then
+	BINARY="$RELEASE_BIN"
 else
-	echo " FAIL"
+	>&2 echo "No valid binary found. Please compile the project."
 	exit 1
 fi
 
-echo -n "Positive prime test..."
-if ./target/release/indivisible -t 11
+tests=0
+passed=0
+
+((tests++))
+echo -n "${tests}: Find 5th prime number..."
+if [[ $("$BINARY" 5) == 11 ]]
 then
 	echo " pass"
+	((passed++))
 else
 	echo " FAIL"
-	exit 1
 fi
 
-echo -n "Negative prime test..."
-if ! ./target/release/indivisible -t 9
+((tests++))
+echo -n "${tests}: 11 is prime..."
+if "$BINARY" -t 11
 then
 	echo " pass"
+	((passed++))
 else
 	echo " FAIL"
-	exit 1
 fi
+
+((tests++))
+echo -n "${tests}: 9 is not prime..."
+if ! "$BINARY" -t 9
+then
+	echo " pass"
+	((passed++))
+else
+	echo " FAIL"
+fi
+
+echo "Results: $passed/$tests"
