@@ -40,8 +40,8 @@ struct Opt {
 	test:bool,
 	#[structopt(help = "Ordinal of the prime to generate or number to test for primality")]
 	num:u64,
-	#[structopt(short, long, name = "n", help = "Number of threads to spawn")]
-	jobs:Option<u64>,
+	#[structopt(short, long, name = "n", default_value = "1", help = "Number of threads to spawn")]
+	jobs:u64,
 }
 
 fn main() {
@@ -56,11 +56,6 @@ fn main() {
 			prime_list.borrow_mut().push_back(p.unwrap().parse().unwrap());
 		}
 	}
-
-	let jobs = match opts.jobs {
-		Some(n) => n,
-		None => 1, // TODO: use number of CPUs
-	};
 
 	if opts.num == 0 {
 		eprintln!("Invalid value for num: {}", opts.num);
