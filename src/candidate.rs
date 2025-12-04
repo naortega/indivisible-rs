@@ -72,12 +72,10 @@ impl CandidateGenerator {
 			}
 		}
 
-		if self.first_use {
-			self.first_use = false;
-		} else {
-			self.first_use = true;
+		if !self.first_use {
 			self.base += 6;
 		}
+		self.first_use = !self.first_use;
 
 		val
 	}
