@@ -6,12 +6,12 @@ then
 	exit 1
 fi
 
-PREFIX="/usr/local"
+PREFIX="${PREFIX:-/usr/local}"
 
 echo "Installing ./target/release/indivisible to $PREFIX/bin/"
-install -m 755 ./target/release/indivisible $PREFIX/bin/
+install -Dm755 ./target/release/indivisible $PREFIX/bin/indivisible
 gzip -k indivisible.1
 echo "Installing manpage to $PREFIX/share/man/man1/"
-install -m 644 indivisible.1.gz $PREFIX/share/man/man1/
+install -Dm644 indivisible.1.gz $PREFIX/share/man/man1/indivisible.1.gz
 # clean up compressed file
 rm indivisible.1.gz
