@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2021  Ortega Froysa, Nicolás <nicolas@ortegas.org>
- * Author: Ortega Froysa, Nicolás <nicolas@ortegas.org>
+ * Copyright (C) 2025  Nicolás Ortega Froysa <nicolas@ortegas.org>
+ * Author: Nicolás Ortega Froysa <nicolas@ortegas.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
