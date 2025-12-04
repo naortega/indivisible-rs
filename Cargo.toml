@@ -4,7 +4,7 @@ version = "2.0.0"
 authors = ["Nicolás Ortega Froysa <nicolas@ortegas.org>"]
 description = "A prime number generator and tester"
 edition = "2018"
-readme = "README"
+readme = "README.md"
 license = "GPL-3.0"
 keywords = [ "primes", "math" ]
 
