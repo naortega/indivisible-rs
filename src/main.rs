@@ -25,6 +25,8 @@ use std::process;
 use std::rc::Rc;
 use structopt::StructOpt;
 
+mod candidate;
+use candidate::CandidateGenerator;
 mod worker;
 
 #[derive(StructOpt)]
@@ -76,5 +78,10 @@ fn main() {
 		let res = *primes_list.borrow().get(opts.num as usize).unwrap();
 		println!("{}", res);
 	} else {
+		let mut cand_gen = CandidateGenerator::new();
+
+		while primes_list.borrow().len() < opts.num as usize {
+			let cand = cand_gen.next();
+		}
 	}
 }
