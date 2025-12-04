@@ -47,13 +47,13 @@ struct Opt {
 fn main() {
 	let opts = Opt::from_args();
 
-	let primes_list = Rc::new(RefCell::new(VecDeque::<u64>::new()));
+	let prime_list = Rc::new(RefCell::new(VecDeque::<u64>::new()));
 
 	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
 		for p in reader.lines().into_iter() {
-			primes_list.borrow_mut().push_back(p.unwrap().parse().unwrap());
+			prime_list.borrow_mut().push_back(p.unwrap().parse().unwrap());
 		}
 	}
 
@@ -67,20 +67,20 @@ fn main() {
 		process::exit(1);
 	}
 
-	if opts.test && *primes_list.borrow().back().unwrap_or(&0) >= opts.num {
-		for i in primes_list.borrow().iter() {
+	if opts.test && *prime_list.borrow().back().unwrap_or(&0) >= opts.num {
+		for i in prime_list.borrow().iter() {
 			if *i == opts.num {
 				process::exit(0)
 			}
 		}
 		process::exit(1)
-	} else if !opts.test && primes_list.borrow().len() >= opts.num as usize {
-		let res = *primes_list.borrow().get(opts.num as usize).unwrap();
+	} else if !opts.test && prime_list.borrow().len() >= opts.num as usize {
+		let res = *prime_list.borrow().get(opts.num as usize).unwrap();
 		println!("{}", res);
 	} else {
 		let mut cand_gen = CandidateGenerator::new();
-		if !primes_list.borrow().is_empty() {
-			cand_gen.calc_base(*primes_list.borrow().back().unwrap());
+		if !prime_list.borrow().is_empty() {
+			cand_gen.calc_base(*prime_list.borrow().back().unwrap());
 		}
 
 		loop {
@@ -90,7 +90,7 @@ fn main() {
 			}
 
 			let mut is_prime = true;
-			for p in primes_list.borrow().iter() {
+			for p in prime_list.borrow().iter() {
 				if cand % *p == 0 {
 					is_prime = false;
 					break;
@@ -98,25 +98,25 @@ fn main() {
 			}
 
 			if is_prime {
-				primes_list.borrow_mut().push_back(cand);
+				prime_list.borrow_mut().push_back(cand);
 				if opts.verbose {
 					println!("{}", cand);
 				}
 
-				if !opts.test && primes_list.borrow().len() == opts.num as usize {
+				if !opts.test && prime_list.borrow().len() == opts.num as usize {
 					break;
 				}
 			}
 		}
 
 		if opts.test {
-			if *primes_list.borrow().back().unwrap() == opts.num {
+			if *prime_list.borrow().back().unwrap() == opts.num {
 				process::exit(0)
 			} else {
 				process::exit(1)
 			}
 		} else if !opts.verbose {
-			let last_prime = *primes_list.borrow().back().unwrap();
+			let last_prime = *prime_list.borrow().back().unwrap();
 			println!("{}", last_prime);
 		}
 	}

@@ -21,13 +21,13 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 
 pub struct Worker {
-	primes_list:Rc<RefCell<VecDeque<u64>>>,
+	prime_list:Rc<RefCell<VecDeque<u64>>>,
 }
 
 impl Worker {
 	pub fn new(primes_list:Rc<RefCell<VecDeque<u64>>>) -> Worker {
 		Worker {
-			primes_list,
+			prime_list: primes_list,
 		}
 	}
 
