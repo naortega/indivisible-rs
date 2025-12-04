@@ -47,7 +47,7 @@ struct Opt {
 fn main() {
 	let opts = Opt::from_args();
 
-	let mut primes_list = Rc::new(RefCell::new(VecDeque::<u64>::new()));
+	let primes_list = Rc::new(RefCell::new(VecDeque::<u64>::new()));
 
 	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
