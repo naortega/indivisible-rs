@@ -82,6 +82,26 @@ fn main() {
 
 		while primes_list.borrow().len() < opts.num as usize {
 			let cand = cand_gen.next();
+			let mut is_prime = true;
+
+			for i in primes_list.borrow().iter() {
+				if cand % *i == 0 {
+					is_prime = false;
+					break;
+				}
+			}
+
+			if is_prime {
+				primes_list.borrow_mut().push_back(cand);
+				if opts.verbose {
+					println!("{}", cand);
+				}
+			}
+		}
+
+		if !opts.verbose {
+			let last_prime = *primes_list.borrow().back().unwrap();
+			println!("{}", last_prime);
 		}
 	}
 }
