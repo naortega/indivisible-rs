@@ -80,12 +80,15 @@ fn main() {
 	} else {
 		let mut cand_gen = CandidateGenerator::new();
 
-		while primes_list.borrow().len() < opts.num as usize {
+		loop {
 			let cand = cand_gen.next();
-			let mut is_prime = true;
+			if opts.test && cand > opts.num {
+				break;
+			}
 
-			for i in primes_list.borrow().iter() {
-				if cand % *i == 0 {
+			let mut is_prime = true;
+			for p in primes_list.borrow().iter() {
+				if cand % *p == 0 {
 					is_prime = false;
 					break;
 				}
@@ -96,10 +99,20 @@ fn main() {
 				if opts.verbose {
 					println!("{}", cand);
 				}
+
+				if !opts.test && primes_list.borrow().len() == opts.num as usize {
+					break;
+				}
 			}
 		}
 
-		if !opts.verbose {
+		if opts.test {
+			if *primes_list.borrow().back().unwrap() == opts.num {
+				process::exit(0)
+			} else {
+				process::exit(1)
+			}
+		} else if !opts.verbose {
 			let last_prime = *primes_list.borrow().back().unwrap();
 			println!("{}", last_prime);
 		}
