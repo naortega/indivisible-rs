@@ -21,6 +21,7 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
+use std::process;
 use std::rc::Rc;
 use structopt::StructOpt;
 
@@ -33,10 +34,10 @@ struct Opt {
 	verbose:bool,
 	#[structopt(short, long, name = "FILE", help = "Import prime numbers from FILE")]
 	import:Option<PathBuf>,
-	#[structopt(short, long, help = "Test if n is prime instead of generation")]
+	#[structopt(short, long, help = "Test if num is prime instead of generation")]
 	test:bool,
 	#[structopt(help = "Ordinal of the prime to generate or number to test for primality")]
-	n:u64,
+	num:u64,
 	#[structopt(short, long, name = "n", help = "Number of threads to spawn")]
 	jobs:Option<u64>,
 }
@@ -44,13 +45,13 @@ struct Opt {
 fn main() {
 	let opts = Opt::from_args();
 
-	let mut primes = Rc::new(RefCell::new(VecDeque::<u64>::new()));
+	let mut primes_list = Rc::new(RefCell::new(VecDeque::<u64>::new()));
 
 	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
 		for p in reader.lines().into_iter() {
-			primes.borrow_mut().push_back(p.unwrap().parse().unwrap());
+			primes_list.borrow_mut().push_back(p.unwrap().parse().unwrap());
 		}
 	}
 
@@ -58,4 +59,22 @@ fn main() {
 		Some(n) => n,
 		None => 1, // TODO: use number of CPUs
 	};
+
+	if opts.num == 0 {
+		eprintln!("Invalid value for num: {}", opts.num);
+		process::exit(1);
+	}
+
+	if opts.test && *primes_list.borrow().back().unwrap_or(&0) >= opts.num {
+		for i in primes_list.borrow().iter() {
+			if *i == opts.num {
+				process::exit(0)
+			}
+		}
+		process::exit(1)
+	} else if !opts.test && primes_list.borrow().len() >= opts.num as usize {
+		let res = *primes_list.borrow().get(opts.num as usize).unwrap();
+		println!("{}", res);
+	} else {
+	}
 }
