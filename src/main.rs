@@ -76,9 +76,11 @@ fn main() {
 				arr[n2] = !arr[n2];
 			}
 
-			let n3 = ((3 * x * x) - (y * y)) as usize;
-			if x > y && n3 <= (opts.num as usize) && n3 % 12 == 11 {
-				arr[n3] = !arr[n3];
+			if x > y {
+				let n3 = ((3 * x * x) - (y * y)) as usize;
+				if n3 <= (opts.num as usize) && n3 % 12 == 11 {
+					arr[n3] = !arr[n3];
+				}
 			}
 		}
 	}
