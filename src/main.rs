@@ -31,7 +31,7 @@ struct Opt {
 	import:Option<PathBuf>,
 	#[structopt(short, long, help = "Test if num is prime instead of generation")]
 	test:bool,
-	#[structopt(help = "Ordinal of the prime to generate or number to test for primality")]
+	#[structopt(help = "Max of the prime to generate or number to test for primality")]
 	num:u64,
 	#[structopt(short, long, name = "n", default_value = "1", help = "Number of threads to spawn")]
 	jobs:u64,
