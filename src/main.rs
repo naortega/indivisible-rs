@@ -33,7 +33,7 @@ struct Opt {
 	#[structopt(short, long, help = "Test if num is prime instead of generation")]
 	test:bool,
 	#[structopt(help = "Ordinal of the prime to generate or number to test for primality")]
-	num:usize,
+	num:u64,
 	#[structopt(short, long, name = "n", default_value = "1", help = "Number of threads to spawn")]
 	jobs:u64,
 }
@@ -69,17 +69,17 @@ fn main() {
 	for x in 1..=(f64::sqrt(opts.num as f64) as u64 + 1) {
 		for y in 1..=(f64::sqrt(opts.num as f64) as u64 + 1) {
 			let n1 = ((4 * x * x) + (y * y)) as usize;
-			if n1 <= opts.num && (n1 % 12 == 1 || n1 % 12 == 5) {
+			if n1 <= (opts.num as usize) && (n1 % 12 == 1 || n1 % 12 == 5) {
 				arr[n1] = !arr[n1];
 			}
 
 			let n2 = ((3 * x * x) + (y * y)) as usize;
-			if n2 <= opts.num && n2 % 12 == 7 {
+			if n2 <= (opts.num as usize) && n2 % 12 == 7 {
 				arr[n2] = !arr[n2];
 			}
 
 			let n3 = ((3 * x * x) - (y * y)) as usize;
-			if x > y && n3 <= opts.num && n3 % 12 == 11 {
+			if x > y && n3 <= (opts.num as usize) && n3 % 12 == 11 {
 				arr[n3] = !arr[n3];
 			}
 		}
@@ -91,16 +91,34 @@ fn main() {
 		}
 
 		let mut j = i * i;
-		while j <= opts.num {
+		while j <= (opts.num as usize) {
 			arr[j] = false;
 			j += i * i;
 		}
 	}
 
-	for i in 2..=opts.num {
+	for i in 2..=(opts.num as usize) {
 		if arr[i] {
-			println!("{}", i);
+			if opts.verbose && !opts.test {
+				println!("{}", i);
+			}
 			prime_list.push_back(i as u64);
+		}
+	}
+
+	if !opts.verbose && !opts.test {
+		println!("{}", prime_list.back().unwrap());
+	} else if opts.test {
+		if *prime_list.back().unwrap() == opts.num {
+			if opts.verbose {
+				println!("{} is prime", opts.num);
+			}
+			process::exit(0);
+		} else {
+			if opts.verbose {
+				println!("{} is composite", opts.num);
+			}
+			process::exit(1);
 		}
 	}
 }
