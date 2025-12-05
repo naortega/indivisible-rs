@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
@@ -38,24 +37,23 @@ struct Opt {
 	jobs:u64,
 }
 
+const SEGMENT_SIZE:usize = 0x40000000;
+
 fn main() {
 	let opts = Opt::from_args();
 
-	let mut prime_list = VecDeque::<u64>::new();
-	let mut arr = Vec::new();
-	for _ in 0..=opts.num {
-		arr.push(false);
-	}
+	let mut prime_list = Vec::<usize>::new();
+	let mut arr = vec![false; SEGMENT_SIZE];
 
 	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
 		for p in reader.lines().into_iter() {
-			prime_list.push_back(p.unwrap().parse().unwrap());
+			prime_list.push(p.unwrap().parse().unwrap());
 		}
 	}
 
-	if opts.num < 2 {
+	if opts.num < 2 || (opts.num as usize) > SEGMENT_SIZE {
 		eprintln!("Invalid value for num: {}", opts.num);
 		process::exit(1);
 	}
@@ -102,14 +100,14 @@ fn main() {
 			if opts.verbose && !opts.test {
 				println!("{}", i);
 			}
-			prime_list.push_back(i as u64);
+			prime_list.push(i);
 		}
 	}
 
 	if !opts.verbose && !opts.test {
-		println!("{}", prime_list.back().unwrap());
+		println!("{}", prime_list.last().unwrap());
 	} else if opts.test {
-		if *prime_list.back().unwrap() == opts.num {
+		if *prime_list.last().unwrap() == (opts.num as usize) {
 			if opts.verbose {
 				println!("{} is prime", opts.num);
 			}
