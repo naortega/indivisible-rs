@@ -23,10 +23,6 @@ use std::path::PathBuf;
 use std::process;
 use structopt::StructOpt;
 
-mod candidate;
-use candidate::CandidateGenerator;
-mod worker;
-
 #[derive(StructOpt)]
 #[structopt(about = "A prime number generator and tester.")]
 struct Opt {
@@ -37,7 +33,7 @@ struct Opt {
 	#[structopt(short, long, help = "Test if num is prime instead of generation")]
 	test:bool,
 	#[structopt(help = "Ordinal of the prime to generate or number to test for primality")]
-	num:u64,
+	num:usize,
 	#[structopt(short, long, name = "n", default_value = "1", help = "Number of threads to spawn")]
 	jobs:u64,
 }
@@ -46,6 +42,10 @@ fn main() {
 	let opts = Opt::from_args();
 
 	let mut prime_list = VecDeque::<u64>::new();
+	let mut arr = Vec::new();
+	for _ in 0..=opts.num {
+		arr.push(false);
+	}
 
 	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
@@ -55,62 +55,52 @@ fn main() {
 		}
 	}
 
-	if opts.num == 0 {
+	if opts.num < 2 {
 		eprintln!("Invalid value for num: {}", opts.num);
 		process::exit(1);
 	}
+	if opts.num > 2 {
+		arr[2] = true;
+	}
+	if opts.num > 3 {
+		arr[3] = true;
+	}
 
-	if opts.test && *prime_list.back().unwrap_or(&0) >= opts.num {
-		for i in prime_list.iter() {
-			if *i == opts.num {
-				process::exit(0)
+	for x in 1..=(f64::sqrt(opts.num as f64) as u64 + 1) {
+		for y in 1..=(f64::sqrt(opts.num as f64) as u64 + 1) {
+			let n1 = ((4 * x * x) + (y * y)) as usize;
+			if n1 <= opts.num && (n1 % 12 == 1 || n1 % 12 == 5) {
+				arr[n1] = !arr[n1];
+			}
+
+			let n2 = ((3 * x * x) + (y * y)) as usize;
+			if n2 <= opts.num && n2 % 12 == 7 {
+				arr[n2] = !arr[n2];
+			}
+
+			let n3 = ((3 * x * x) - (y * y)) as usize;
+			if x > y && n3 <= opts.num && n3 % 12 == 11 {
+				arr[n3] = !arr[n3];
 			}
 		}
-		process::exit(1)
-	} else if !opts.test && prime_list.len() >= opts.num as usize {
-		let res = *prime_list.get(opts.num as usize).unwrap();
-		println!("{}", res);
-	} else {
-		let mut cand_gen = CandidateGenerator::new();
-		if !prime_list.is_empty() {
-			cand_gen.calc_base(*prime_list.back().unwrap());
+	}
+
+	for i in 5..=(f64::sqrt(opts.num as f64) as u64 + 1) as usize {
+		if !arr[i as usize] {
+			continue;
 		}
 
-		loop {
-			let cand = cand_gen.next();
-			if opts.test && cand > opts.num {
-				break;
-			}
-
-			let mut is_prime = true;
-			for p in prime_list.iter() {
-				if cand % *p == 0 {
-					is_prime = false;
-					break;
-				}
-			}
-
-			if is_prime {
-				prime_list.push_back(cand);
-				if opts.verbose {
-					println!("{}", cand);
-				}
-
-				if !opts.test && prime_list.len() == opts.num as usize {
-					break;
-				}
-			}
+		let mut j = i * i;
+		while j <= opts.num {
+			arr[j] = false;
+			j += i * i;
 		}
+	}
 
-		if opts.test {
-			if *prime_list.back().unwrap() == opts.num {
-				process::exit(0)
-			} else {
-				process::exit(1)
-			}
-		} else if !opts.verbose {
-			let last_prime = *prime_list.back().unwrap();
-			println!("{}", last_prime);
+	for i in 2..=opts.num {
+		if arr[i] {
+			println!("{}", i);
+			prime_list.push_back(i as u64);
 		}
 	}
 }
