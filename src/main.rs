@@ -92,7 +92,7 @@ fn main() {
 	}
 
 	for i in 5..=(f64::sqrt(opts.num as f64) as u64 + 1) as usize {
-		if !arr[i as usize] {
+		if !arr[i] {
 			continue;
 		}
 
