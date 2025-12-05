@@ -53,7 +53,8 @@ fn main() {
 		}
 	}
 
-	if opts.num < 2 || (opts.num as usize) > SEGMENT_SIZE {
+	let limit = (opts.num * 5) as usize;
+	if opts.num < 2 || limit > SEGMENT_SIZE {
 		eprintln!("Invalid value for num: {}", opts.num);
 		process::exit(1);
 	}
@@ -64,21 +65,26 @@ fn main() {
 		arr[3] = true;
 	}
 
-	for x in 1..=(f64::sqrt(opts.num as f64) as u64 + 1) {
-		for y in 1..=(f64::sqrt(opts.num as f64) as u64 + 1) {
-			let n1 = ((4 * x * x) + (y * y)) as usize;
-			if n1 <= (opts.num as usize) && (n1 % 12 == 1 || n1 % 12 == 5) {
+	let sqrt_of_num = f64::sqrt(opts.num as f64) as u64;
+	for x in 1..=sqrt_of_num {
+		let xx4 = 4 * x * x;
+		let xx3 = 3 * x * x;
+		for y in 1..=sqrt_of_num {
+			let yy = y * y;
+
+			let n1 = (xx4 + yy) as usize;
+			if n1 % 12 == 1 || n1 % 12 == 5 {
 				arr[n1] = !arr[n1];
 			}
 
-			let n2 = ((3 * x * x) + (y * y)) as usize;
-			if n2 <= (opts.num as usize) && n2 % 12 == 7 {
+			let n2 = (xx3 + yy) as usize;
+			if n2 % 12 == 7 {
 				arr[n2] = !arr[n2];
 			}
 
 			if x > y {
-				let n3 = ((3 * x * x) - (y * y)) as usize;
-				if n3 <= (opts.num as usize) && n3 % 12 == 11 {
+				let n3 = (xx3 - yy) as usize;
+				if n3 % 12 == 11 {
 					arr[n3] = !arr[n3];
 				}
 			}
