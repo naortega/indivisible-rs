@@ -9,6 +9,12 @@ then
 	exit 1
 fi
 
+if ! command -v calc &>/dev/null
+then
+	>&2 echo "Missing 'calc' program. Please install it for this script."
+	exit 1
+fi
+
 echo "Calculating primes up to 100,000,000"
 TOTAL="0"
 for _ in $(seq "$TRIALS")
