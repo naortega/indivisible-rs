@@ -65,25 +65,25 @@ fn main() {
 		arr[3] = true;
 	}
 
-	let sqrt_of_num = f64::sqrt(opts.num as f64) as u64;
+	let sqrt_of_num = f64::sqrt(opts.num as f64) as usize;
 	for x in 1..=sqrt_of_num {
 		let xx4 = 4 * x * x;
 		let xx3 = 3 * x * x;
 		for y in 1..=sqrt_of_num {
 			let yy = y * y;
 
-			let n1 = (xx4 + yy) as usize;
+			let n1 = xx4 + yy;
 			if n1 % 12 == 1 || n1 % 12 == 5 {
 				arr[n1] = !arr[n1];
 			}
 
-			let n2 = (xx3 + yy) as usize;
+			let n2 = xx3 + yy;
 			if n2 % 12 == 7 {
 				arr[n2] = !arr[n2];
 			}
 
 			if x > y {
-				let n3 = (xx3 - yy) as usize;
+				let n3 = xx3 - yy;
 				if n3 % 12 == 11 {
 					arr[n3] = !arr[n3];
 				}
@@ -91,7 +91,7 @@ fn main() {
 		}
 	}
 
-	for i in 5..=(f64::sqrt(opts.num as f64) as u64 + 1) as usize {
+	for i in 5..=sqrt_of_num {
 		if !arr[i] {
 			continue;
 		}
