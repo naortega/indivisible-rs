@@ -30,11 +30,14 @@ pub fn work_segment(known_primes:&Vec<u64>, start:usize, end:usize) -> Vec<u64> 
 
 	for p in known_primes {
 		let prime = *p as usize;
-		let mut mult = prime * prime;
+		let modu = start % prime;
+		let mut mult = if modu == 0 {
+			start
+		} else {
+			start + prime - modu
+		};
 		while mult < end {
-			if mult > start {
-				sieve[mult - start] = false;
-			}
+			sieve[mult - start] = false;
 			mult += prime;
 		}
 	}
