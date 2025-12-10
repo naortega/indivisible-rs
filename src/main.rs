@@ -35,7 +35,7 @@ struct Opt {
 	test:bool,
 	#[structopt(help = "Max of the prime to generate or number to test for primality")]
 	num:usize,
-	#[structopt(short, long, name = "SIZE", default_value = "1000", help = "Set a custom sieve size")]
+	#[structopt(short, long, name = "SIZE", default_value = "10485760", help = "Set a custom sieve size")]
 	sieve:usize,
 	//#[structopt(short, long, name = "n", default_value = "1", help = "Number of threads to spawn")]
 	//jobs:u64,
