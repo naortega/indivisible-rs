@@ -18,8 +18,10 @@ tests=0
 passed=0
 
 ((tests++))
-echo -n "${tests}: Find 5th prime number..."
-if [[ $("$BINARY" 5) == 11 ]]
+echo -n "${tests}: Find all prime numbers before 70..."
+expect="2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 "
+
+if [ "$("$BINARY" -v 70 | tr '\n' ' ')" = "$expect" ]
 then
 	echo " pass"
 	((passed++))
