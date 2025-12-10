@@ -20,62 +20,35 @@
  * @brief Work on a segment.
  *
  * @param start:usize Beginning of the segment (inclusive).
- * @param end:usize End of the segment (inclusive).
+ * @param end:usize End of the segment (exclusive).
  *
  * @return List of primes found in segment.
  */
-pub fn work_segment(start:usize, end:usize) -> Vec<u64> {
-	let mut found_primes = Vec::<u64>::new();
-	let mut arr = vec![false; end - start + 1];
+pub fn work_segment(known_primes:&Vec<u64>, start:usize, end:usize) -> Vec<u64> {
+	let mut sieve = vec![true; end - start];
+	let mut found_primes = Vec::new();
 
-	if start < 2 && end > 2 {
-		arr[2] = true;
-	}
-	if start < 3 && end > 3 {
-		arr[3] = true;
-	}
-
-	let sqrt_of_num = f64::sqrt(end as f64) as usize;
-	for x in 1..=sqrt_of_num {
-		let xx4 = 4 * x * x;
-		let xx3 = 3 * x * x;
-		for y in 1..=sqrt_of_num {
-			let yy = y * y;
-
-			let n1 = xx4 + yy;
-			if n1 <= end && (n1 % 12 == 1 || n1 % 12 == 5) {
-				arr[n1] = !arr[n1];
+	for p in known_primes {
+		let prime = *p as usize;
+		let mut mult = prime * prime;
+		while mult < end {
+			if mult > start {
+				sieve[mult - start] = false;
 			}
-
-			let n2 = xx3 + yy;
-			if n2 <= end && n2 % 12 == 7 {
-				arr[n2] = !arr[n2];
-			}
-
-			if x > y {
-				let n3 = xx3 - yy;
-				if n3 <= end && n3 % 12 == 11 {
-					arr[n3] = !arr[n3];
-				}
-			}
+			mult += prime;
 		}
 	}
 
-	for i in 5..=sqrt_of_num {
-		if !arr[i] {
-			continue;
-		}
+	for i in 0..(end - start) {
+		if sieve[i] {
+			let prime = i + start;
+			found_primes.push(prime as u64);
 
-		let mut j = i * i;
-		while j <= end {
-			arr[j] = false;
-			j += i * i;
-		}
-	}
-
-	for i in 2..=end {
-		if arr[i] {
-			found_primes.push(i as u64);
+			let mut mult = prime * prime;
+			while mult < end {
+				sieve[mult - start] = false;
+				mult += prime;
+			}
 		}
 	}
 

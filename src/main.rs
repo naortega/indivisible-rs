@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//use std::fs::File;
-//use std::io::{BufRead, BufReader};
-//use std::path::PathBuf;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::path::PathBuf;
 use std::process;
 use structopt::StructOpt;
 
@@ -29,8 +29,8 @@ mod worker;
 struct Opt {
 	#[structopt(short, long, help = "Print all found primes")]
 	verbose:bool,
-	//#[structopt(short, long, name = "FILE", help = "Import prime numbers from FILE")]
-	//import:Option<PathBuf>,
+	#[structopt(short, long, name = "FILE", help = "Import prime numbers from FILE")]
+	import:Option<PathBuf>,
 	#[structopt(short, long, help = "Test if num is prime instead of generation")]
 	test:bool,
 	#[structopt(help = "Max of the prime to generate or number to test for primality")]
@@ -39,23 +39,47 @@ struct Opt {
 	//jobs:u64,
 }
 
+const SEGMENT_SIZE:usize = 0x100000000;
+
 fn main() {
 	let opts = Opt::from_args();
+	let mut prime_list = Vec::new();
 
-	/*if opts.import.is_some() {
+	if opts.import.is_some() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
 		for p in reader.lines().into_iter() {
 			prime_list.push(p.unwrap().parse().unwrap());
 		}
-	}*/
+	}
 
 	if opts.num < 2 {
 		eprintln!("Invalid value for num: {}", opts.num);
 		process::exit(1);
 	}
 
-	let prime_list = worker::work_segment(0, opts.num);
+	let mut start:usize = if prime_list.is_empty() {
+		2
+	} else {
+		*prime_list.last().unwrap() as usize
+	};
+	while start < opts.num {
+		let end = if start + SEGMENT_SIZE < opts.num {
+			start + SEGMENT_SIZE
+		} else {
+			opts.num + 1
+		};
+		let mut new_primes = worker::work_segment(&prime_list, start, end);
+
+		if opts.verbose {
+			for p in &new_primes {
+				println!("{}", *p);
+			}
+		}
+		prime_list.append(&mut new_primes);
+
+		start += SEGMENT_SIZE;
+	}
 
 	if opts.test {
 		if *prime_list.last().unwrap() == (opts.num as u64) {
@@ -69,13 +93,7 @@ fn main() {
 			}
 			process::exit(1);
 		}
-	} else {
-		if !opts.verbose {
-			println!("{}", prime_list.last().unwrap());
-		} else {
-			for p in prime_list {
-				println!("{}", p);
-			}
-		}
+	} else if !opts.verbose {
+		println!("{}", prime_list.last().unwrap());
 	}
 }
