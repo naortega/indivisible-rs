@@ -32,11 +32,11 @@ do
 	esac
 done
 
-echo "Calculating primes up to 100,000,000"
+echo "Calculating primes up to 1,000,000,000"
 TOTAL="0"
 for _ in $(seq "$TRIALS")
 do
-	TIME=$(command time -f "%e" "$EXE" "${OPTIONS[@]}" 100000000 2>&1 >/dev/null)
+	TIME=$(command time -f "%e" "$EXE" "${OPTIONS[@]}" 1000000000 2>&1 >/dev/null)
 	TOTAL=$(calc "$TOTAL + $TIME")
 done
 
