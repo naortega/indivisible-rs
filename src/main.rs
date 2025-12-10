@@ -35,11 +35,11 @@ struct Opt {
 	test:bool,
 	#[structopt(help = "Max of the prime to generate or number to test for primality")]
 	num:usize,
+	#[structopt(short, long, default_value = "1000", help = "Set a custom sieve size")]
+	sieve:usize,
 	//#[structopt(short, long, name = "n", default_value = "1", help = "Number of threads to spawn")]
 	//jobs:u64,
 }
-
-const SEGMENT_SIZE:usize = 0x100000000;
 
 fn main() {
 	let opts = Opt::from_args();
@@ -69,8 +69,8 @@ fn main() {
 		(*prime_list.last().unwrap() + 1) as usize
 	};
 	while start < opts.num {
-		let end = if start + SEGMENT_SIZE < opts.num {
-			start + SEGMENT_SIZE
+		let end = if start + opts.sieve < opts.num {
+			start + opts.sieve
 		} else {
 			opts.num + 1
 		};
@@ -83,7 +83,7 @@ fn main() {
 		}
 		prime_list.append(&mut new_primes);
 
-		start += SEGMENT_SIZE;
+		start += opts.sieve;
 	}
 
 	if opts.test {
