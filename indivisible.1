@@ -6,7 +6,9 @@ indivisible \- prime number generator and tester
 [\fIOPTIONS\fR] <\fIn\fR>
 
 .SH "DESCRIPTION"
-Indivisible is a program for working with prime numbers. Its default behaviour will attempt to find the \fInth\fR prime.
+Indivisible is a program for working with prime numbers. It can either generate
+primes up to a limit \fIn\fR or test to see if \fIn\fR is a prime. It makes use
+of a segmented sieve of Eratosthenes.
 
 .SH "OPTIONS"
 .TP
@@ -19,7 +21,7 @@ Import prime numbers from \fIFILE\fR
 \fB\-t\fR, \fB\-\-test\fR
 Test if n is a prime instead of generation
 .TP
-\fB\-s\fR, \fB\-\-sieve\fR
+\fB\-s\fR, \fB\-\-sieve\fR <\fISIZE\fR>
 Set a custom sieve size
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
