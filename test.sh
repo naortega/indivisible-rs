@@ -17,6 +17,7 @@ fi
 tests=0
 passed=0
 
+## TEST 1
 ((tests++))
 echo -n "${tests}: Find all prime numbers before 70..."
 expect="2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 "
@@ -29,6 +30,7 @@ else
 	echo " FAIL"
 fi
 
+## TEST 2
 ((tests++))
 echo -n "${tests}: 11 is prime..."
 if "$BINARY" -t 11
@@ -39,6 +41,7 @@ else
 	echo " FAIL"
 fi
 
+## TEST 3
 ((tests++))
 echo -n "${tests}: 9 is not prime..."
 if ! "$BINARY" -t 9
@@ -49,4 +52,5 @@ else
 	echo " FAIL"
 fi
 
+## RESULTS
 echo "Results: $passed/$tests"
