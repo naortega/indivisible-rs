@@ -49,7 +49,12 @@ fn main() {
 		let in_file = File::open(opts.import.unwrap()).unwrap();
 		let reader = BufReader::new(in_file);
 		for p in reader.lines().into_iter() {
-			prime_list.push(p.unwrap().parse().unwrap());
+			let prime:u64 = p.unwrap().parse().unwrap();
+			if (prime as usize) > opts.num {
+				break;
+			}
+
+			prime_list.push(prime);
 		}
 	}
 
@@ -61,7 +66,7 @@ fn main() {
 	let mut start:usize = if prime_list.is_empty() {
 		2
 	} else {
-		*prime_list.last().unwrap() as usize
+		(*prime_list.last().unwrap() + 1) as usize
 	};
 	while start < opts.num {
 		let end = if start + SEGMENT_SIZE < opts.num {
