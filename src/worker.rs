@@ -19,6 +19,7 @@
 /**
  * @brief Work on a segment.
  *
+ * @param known_primes:&Vec<u64> List of known primes at least until sqrt(end).
  * @param start:usize Beginning of the segment (inclusive).
  * @param end:usize End of the segment (exclusive).
  *
