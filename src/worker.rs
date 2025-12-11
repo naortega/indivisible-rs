@@ -28,8 +28,14 @@ pub fn work_segment(known_primes:&Vec<u64>, start:usize, end:usize) -> Vec<u64> 
 	let mut sieve = vec![true; end - start];
 	let mut found_primes = Vec::new();
 
+	let sqrt_end = f64::sqrt(end as f64) as usize;
+
 	for p in known_primes {
 		let prime = *p as usize;
+		if prime > sqrt_end {
+			break;
+		}
+
 		let modu = start % prime;
 		let mut mult = if modu == 0 {
 			start
