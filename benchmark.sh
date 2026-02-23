@@ -21,6 +21,7 @@ do
 	case "$opt" in
 		s)
 			OPTIONS=("${OPTIONS[@]}" -s "$OPTARG")
+			SIEVE=$OPTARG
 			;;
 		t)
 			TRIALS="$OPTARG"
@@ -33,6 +34,8 @@ do
 done
 
 echo "Calculating primes up to 1,000,000,000"
+echo "Trials: $TRIALS"
+echo "Sieve segment size: ${SIEVE:-"default"}"
 TOTAL="0"
 for _ in $(seq "$TRIALS")
 do
