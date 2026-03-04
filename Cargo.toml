@@ -10,3 +10,4 @@ keywords = [ "primes", "math" ]
 
 [dependencies]
 structopt = "0.3"
+rayon = "1.11"

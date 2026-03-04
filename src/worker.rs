@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::sync::RwLock;
+
 /**
  * @brief Work on a segment.
  *
@@ -25,13 +27,13 @@
  *
  * @return List of primes found in segment.
  */
-pub fn work_segment(known_primes:&Vec<u64>, start:usize, end:usize) -> Vec<u64> {
+pub fn work_segment(known_primes:&RwLock<Vec<u64>>, start:usize, end:usize) -> Vec<u64> {
 	let mut sieve = vec![true; end - start];
 	let mut found_primes = Vec::new();
 
 	let sqrt_end = (end as f64).sqrt() as usize;
 
-	for p in known_primes {
+	for p in known_primes.read().unwrap().iter() {
 		let prime = *p as usize;
 		if prime > sqrt_end {
 			break;

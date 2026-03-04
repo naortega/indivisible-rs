@@ -16,7 +16,7 @@ then
 	exit 1
 fi
 
-while getopts "t:s:" opt
+while getopts "t:s:j:" opt
 do
 	case "$opt" in
 		s)
@@ -25,6 +25,10 @@ do
 			;;
 		t)
 			TRIALS="$OPTARG"
+			;;
+		j)
+			OPTIONS=("${OPTIONS[@]}" -j "$OPTARG")
+			JOBS=$OPTARG
 			;;
 		*)
 			>&2 echo "Uknown option $opt"
@@ -36,6 +40,7 @@ done
 echo "Calculating primes up to 1,000,000,000"
 echo "Trials: $TRIALS"
 echo "Sieve segment size: ${SIEVE:-"default"}"
+echo "Number of jobs: ${JOBS:-"default"}"
 TOTAL="0"
 for _ in $(seq "$TRIALS")
 do
