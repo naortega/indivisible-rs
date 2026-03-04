@@ -29,7 +29,7 @@ pub fn work_segment(known_primes:&Vec<u64>, start:usize, end:usize) -> Vec<u64> 
 	let mut sieve = vec![true; end - start];
 	let mut found_primes = Vec::new();
 
-	let sqrt_end = f64::sqrt(end as f64) as usize;
+	let sqrt_end = (end as f64).sqrt() as usize;
 
 	for p in known_primes {
 		let prime = *p as usize;
