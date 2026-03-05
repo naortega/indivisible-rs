@@ -96,8 +96,8 @@ fn main() {
 
 	let prime_list = Arc::new(RwLock::new(prime_list_raw));
 	loop {
-		if (start < opts.num) && ((prime_list.read().unwrap().is_empty() && pending_tasks == 0) ||
-			(*prime_list.read().unwrap().last().unwrap_or(&0)).pow(2) >= (end as u64))
+		if (start < opts.num) && ((*prime_list.read().unwrap().last().unwrap_or(&0)).pow(2) >= (end as u64) ||
+			(prime_list.read().unwrap().is_empty() && pending_tasks == 0))
 		{
 			let prime_list_clone = Arc::clone(&prime_list);
 			let tx_clone = tx.clone();
