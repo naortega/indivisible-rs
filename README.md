@@ -1,6 +1,8 @@
 # Indivisible
 
-Indivisible is an optimized prime number generator and tester.
+Indivisible is an optimized prime number generator and tester using a segmented
+version of the [Sieve of
+Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).
 
 ## Build & Installation
 
