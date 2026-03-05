@@ -93,10 +93,11 @@ fn main() {
 	} else {
 		opts.num + 1
 	};
+	let mut squared_limit = 0;
 
 	let prime_list = Arc::new(RwLock::new(prime_list_raw));
 	loop {
-		if (start < opts.num) && ((*prime_list.read().unwrap().last().unwrap_or(&0)).pow(2) >= (end as u64) ||
+		if (start < opts.num) && (squared_limit >= (end as u64) ||
 			(prime_list.read().unwrap().is_empty() && pending_tasks == 0))
 		{
 			let prime_list_clone = Arc::clone(&prime_list);
@@ -156,6 +157,8 @@ fn main() {
 						None => break,
 					};
 				}
+
+				squared_limit = prime_list.read().unwrap().last().unwrap().pow(2);
 			}
 		} else {
 			// no more tasks to be added, and all tasks have been processed
